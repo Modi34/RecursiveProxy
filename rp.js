@@ -28,11 +28,16 @@ class RecursiveProxy{
 		return this.Proxy = new Proxy(this, this.handler)
 	}
 
-	subscribe(key, callback){
-		if(!callback || !key){return false}
-		if(!this.subs[key]){this.subs[key] = []}
-		this.subs[key].push(callback)
-		return this.subs[key].length - 1
+	subscribe(callback, key){
+		if(!callback){return false}
+		let subs = this.subs;
+		if(!key){
+			subs = this.parent.subs
+			key = this.parentKey
+		}
+		if(!subs[key]){subs[key] = []}
+		subs[key].push(callback)
+		return subs[key].length - 1
 	}
 
 	getParents(){
